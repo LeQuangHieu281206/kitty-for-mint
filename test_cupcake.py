@@ -33,6 +33,21 @@ class CupcakeTest(unittest.TestCase):
             sleep = animations["sleep"]
             self.assertIn(sleep["asset"], animations, character["id"])
             self.assertNotEqual(sleep["asset"], "sleep", character["id"])
+            frames = cupcake.generate_sleep_frames(character)
+            self.assertEqual(len(frames), sleep["frames"], character["id"])
+            for frame in frames:
+                self.assertEqual(frame.get_width(), cupcake.SPRITE)
+                self.assertEqual(frame.get_height(), cupcake.SPRITE)
+                pixels = cupcake.rgba_pixels(frame)
+                self.assertTrue(
+                    any(pixels[index + 3] for index in range(0, len(pixels), 4)),
+                    character["id"],
+                )
+            self.assertNotEqual(
+                cupcake.rgba_pixels(frames[0]),
+                cupcake.rgba_pixels(frames[1]),
+                character["id"],
+            )
 
 
 if __name__ == "__main__":

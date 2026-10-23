@@ -11,6 +11,8 @@
 
 ![Mèo ngủ trên giường](docs/sleep.png)
 
+![Click và kéo mèo](docs/reactions.png)
+
 ## Giới thiệu
 
 Bản gốc Cupcake hiển thị mèo animation trên Dock của macOS. Linux không có Dock
@@ -19,15 +21,19 @@ luôn nổi, kéo thả được, có menu chuột phải và tự nhớ vị tr
 
 - 18 nhân vật, 320 frame pixel-art.
 - Animation `Chill`, `Wiggle`, các đòn đặc biệt và **Sleep** (ngủ).
-- Click vào mèo để xem phản ứng nhảy/ăn; kéo thả để di chuyển.
-- **Giường pixel-art** nằm ở đáy màn hình, ngay trên thanh dock/panel. Kéo ngang
-  để đặt giường; click giường để gọi mèo lên ngủ hoặc đánh thức mèo.
-- Mèo **tự đi lang thang** trên màn hình, thỉnh thoảng tự lên giường ngủ rồi
-  thức dậy. Có thể tắt bằng mục `Roam Freely`.
-- Thả mèo lên giường bằng chuột trái: mèo tự nằm vào đúng chỗ và ngủ.
+- Click vào mèo để xem phản ứng nhảy/ăn; **click nhanh 3 lần** để mèo
+  thoả mãn, tim bay lên.
+- Kéo mèo để di chuyển: mèo nghiêng theo hướng kéo và có vệt tốc độ.
+- **Giường pet-bed nhỏ** nằm ở cuối thanh dock, cùng hàng với các icon.
+  Kéo ngang để dời giường; click giường để gọi mèo lên ngủ hoặc đánh thức.
+- Mèo ngủ **nằm nghiêng** với `Zzz`, có thể ngủ ở bất kỳ đâu trên màn hình;
+  khi ngủ trên giường, mèo thu nhỏ nằm gọn trong giường ở dock.
+- Mèo **tự đi lang thang** trên màn hình, thỉnh thoảng ngủ tại chỗ hoặc lên
+  giường ngủ rồi thức dậy. Có thể tắt bằng mục `Roam Freely`.
+- Thả mèo lên giường bằng chuột trái: mèo tự nằm vào giường và ngủ.
 - Tự lưu nhân vật, animation, vị trí mèo, vị trí giường và thiết lập lang thang
   vào `~/.config/cupcake/state.json`.
-- Nhẹ: ~41–42.5 MB RAM, ~0.3% CPU khi idle/ngủ, ~1.1% khi đi bộ.
+- Nhẹ: ~41–44 MB RAM, ~0.4% CPU khi idle, ~0.6% khi ngủ.
 
 ## Cấu hình máy đã kiểm thử
 
@@ -92,21 +98,26 @@ python3 cupcake.py
 ## Sử dụng
 
 - **Click chuột trái vào mèo**: mèo nhảy (hoặc ăn với Zombie) một lần rồi trở
-  lại trạng thái bình thường. Nếu mèo đang ngủ, click sẽ đánh thức mèo.
-- **Chuột trái + kéo**: di chuyển mèo tự do. Thả gần giường, mèo sẽ tự nằm vào
-  giường và ngủ.
+  lại trạng thái bình thường. Click nhanh **3 lần** trong khoảng 1.1 giây để
+  mèo thoả mãn: tim hồng bay quanh mèo. Nếu mèo đang ngủ, click sẽ đánh thức mèo.
+- **Chuột trái + kéo**: di chuyển mèo tự do. Trong lúc kéo, mèo nghiêng theo
+  hướng đi và có vệt tốc độ phía sau. Thả gần giường, mèo sẽ tự nằm vào giường
+  và ngủ.
 - **Click giường**: gọi mèo lên giường ngủ; click lần nữa để đánh thức.
 - **Kéo giường ngang**: dời giường dọc theo thanh dock/panel. Vị trí được lưu.
 - **Chuột phải vào mèo hoặc giường**: chọn nhân vật, animation (gồm `Sleep`),
   `Go to Bed`/`Wake Up`, bật/tắt `Roam Freely`, random, About, Quit.
-- **Roam Freely**: mặc định bật. Mèo tự đi đến vị trí ngẫu nhiên, thỉnh thoảng
-  lên giường ngủ 30–90 giây rồi thức dậy. Tắt mục này nếu muốn mèo đứng yên.
+  `Sleep` cho mèo nằm ngủ ngay tại chỗ; `Go to Bed` gọi mèo lên giường.
+- **Roam Freely**: mặc định bật. Mèo tự đi đến vị trí ngẫu nhiên, đôi khi nằm
+  ngủ tại chỗ, đôi khi lên giường ngủ 30–90 giây rồi thức dậy. Tắt mục này nếu
+  muốn mèo đứng yên.
 - **Tray icon**: có trên Cinnamon/MATE/XFCE. Trên GNOME, tray icon bị bỏ qua vì
   GNOME không hiển thị tray kiểu cũ; dùng chuột phải vào mèo hoặc giường.
 
-Bộ asset gốc không có frame ngủ riêng, nên `Sleep` dùng lại frame `Chill`
-(chậm hơn) hoặc một frame của nhân vật đặc biệt, kèm chữ `Zzz` pixel vẽ bằng
-cairo. Mèo vẫn nằm đúng trên giường và có thể ngủ ở mọi nhân vật.
+Bộ asset gốc không có frame ngủ, frame thoả mãn hay frame kéo riêng. App ghép
+đầu và thân của chính nhân vật đang chọn thành tư thế nằm, nhắm mắt, rồi vẽ
+`Zzz` bằng cairo. Hiệu ứng thoả mãn và kéo cũng được vẽ bằng cairo, không cần
+thêm asset hay thư viện.
 
 Tự khởi động cùng phiên đăng nhập:
 
@@ -130,11 +141,11 @@ giường và timer lang thang:
 
 | Chỉ số | Kết quả |
 |---|---|
-| RAM (RSS) | ~41 MB khi idle/ngủ; tối đa ~42.5 MB sau khi đi bộ cả hai hướng |
-| CPU (idle, animation chạy) | ~0.3% một core |
-| CPU (ngủ, có Zzz) | ~0.3% một core |
-| CPU (đi bộ, cửa sổ di chuyển 25 lần/giây) | ~1.1% một core |
-| Khởi động | ~145 ms (import + mở hai cửa sổ) |
+| RAM (RSS) | ~41 MB khi ngủ; ~42–44 MB khi idle/đi bộ |
+| CPU (idle, animation chạy) | ~0.4% một core |
+| CPU (ngủ, có Zzz) | ~0.6% một core |
+| CPU (đi bộ, cửa sổ di chuyển 25 lần/giây) | ~0.75% một core |
+| Khởi động | ~121–143 ms (import + mở hai cửa sổ) |
 | Chuyển animation | 2–3 ms |
 | File descriptor | 13, không tăng |
 | Kiểm tra | 18 nhân vật / 320 frame; 3 test pass |
@@ -142,7 +153,7 @@ giường và timer lang thang:
 Phần lớn bộ nhớ là thư viện GTK3 (~38 MB). App chỉ cache frame của nhân vật
 hiện tại (idle/jump/sleep, kể cả bản lật trái) thay vì cache toàn bộ 320 frame.
 Giường là cửa sổ trong suốt nhỏ, vẽ bằng cairo, không thêm asset hay ảnh nền.
-Frame ngủ dùng lại frame có sẵn nên không tăng dung lượng asset.
+Frame ngủ được sinh từ chính sprite của nhân vật nên không tăng dung lượng asset.
 
 ## Cấu trúc file
 
@@ -150,11 +161,12 @@ Frame ngủ dùng lại frame có sẵn nên không tăng dung lượng asset.
 |---|---|
 | `cupcake.py` | Toàn bộ app: cửa sổ mèo, giường, animation, di chuyển, menu, state |
 | `install.sh` | Cài app vào `~/.local/share/cupcake` và tạo launcher |
-| `test_cupcake.py` | Test load đủ frame, ID nhân vật và animation ngủ |
+| `test_cupcake.py` | Test load đủ frame, ID nhân vật và frame ngủ sinh tự động |
 | `assets/` | 320 frame PNG 32×32 của 18 nhân vật |
 | `icon.png` | Icon ứng dụng 256×256 |
 | `docs/preview.png` | Preview các nhân vật |
-| `docs/sleep.png` | Preview mèo ngủ trên giường |
+| `docs/sleep.png` | Preview mèo ngủ trên giường và ngủ tự do |
+| `docs/reactions.png` | Preview hiệu ứng click thoả mãn và kéo mèo |
 | `LICENSE` | Giấy phép MIT |
 | `.gitignore` | Bỏ qua `__pycache__`, `*.pyc` |
 
@@ -163,6 +175,13 @@ Chạy test:
 ```bash
 python3 -m unittest test_cupcake.py -v
 ```
+
+## Ghi chú về dock
+
+GNOME Shell vẽ dock bên trong shell, nên app không thể chèn một item vào danh
+sách icon của Dash2Dock Lite. Giường là một cửa sổ trong suốt nhỏ, luôn nổi,
+được canh cùng hàng và bám theo mép phải dock; kéo ngang để đổi vị trí. Nếu đổi
+theme, độ rộng dock hoặc số icon, kéo giường để canh lại.
 
 ## Ghi chú Wayland
 
