@@ -9,6 +9,8 @@
 
 ![Preview](docs/preview.png)
 
+![Mèo ngủ trên giường](docs/sleep.png)
+
 ## Giới thiệu
 
 Bản gốc Cupcake hiển thị mèo animation trên Dock của macOS. Linux không có Dock
@@ -16,11 +18,16 @@ kiểu đó, nên bản này biến mèo thành một **desktop pet**: cửa s�
 luôn nổi, kéo thả được, có menu chuột phải và tự nhớ vị trí.
 
 - 18 nhân vật, 320 frame pixel-art.
-- Animation `Chill`, `Wiggle` và các đòn đặc biệt.
-- Kéo thả bằng chuột trái, menu bằng chuột phải.
-- Chọn nhân vật, animation, random, About, Quit.
-- Tự lưu nhân vật và vị trí vào `~/.config/cupcake/state.json`.
-- Nhẹ: ~42 MB RAM, ~0.35% CPU khi chạy animation.
+- Animation `Chill`, `Wiggle`, các đòn đặc biệt và **Sleep** (ngủ).
+- Click vào mèo để xem phản ứng nhảy/ăn; kéo thả để di chuyển.
+- **Giường pixel-art** nằm ở đáy màn hình, ngay trên thanh dock/panel. Kéo ngang
+  để đặt giường; click giường để gọi mèo lên ngủ hoặc đánh thức mèo.
+- Mèo **tự đi lang thang** trên màn hình, thỉnh thoảng tự lên giường ngủ rồi
+  thức dậy. Có thể tắt bằng mục `Roam Freely`.
+- Thả mèo lên giường bằng chuột trái: mèo tự nằm vào đúng chỗ và ngủ.
+- Tự lưu nhân vật, animation, vị trí mèo, vị trí giường và thiết lập lang thang
+  vào `~/.config/cupcake/state.json`.
+- Nhẹ: ~41–42.5 MB RAM, ~0.3% CPU khi idle/ngủ, ~1.1% khi đi bộ.
 
 ## Cấu hình máy đã kiểm thử
 
@@ -84,10 +91,22 @@ python3 cupcake.py
 
 ## Sử dụng
 
-- **Chuột trái + kéo**: di chuyển mèo.
-- **Chuột phải vào mèo**: chọn nhân vật, animation, random, About, Quit.
+- **Click chuột trái vào mèo**: mèo nhảy (hoặc ăn với Zombie) một lần rồi trở
+  lại trạng thái bình thường. Nếu mèo đang ngủ, click sẽ đánh thức mèo.
+- **Chuột trái + kéo**: di chuyển mèo tự do. Thả gần giường, mèo sẽ tự nằm vào
+  giường và ngủ.
+- **Click giường**: gọi mèo lên giường ngủ; click lần nữa để đánh thức.
+- **Kéo giường ngang**: dời giường dọc theo thanh dock/panel. Vị trí được lưu.
+- **Chuột phải vào mèo hoặc giường**: chọn nhân vật, animation (gồm `Sleep`),
+  `Go to Bed`/`Wake Up`, bật/tắt `Roam Freely`, random, About, Quit.
+- **Roam Freely**: mặc định bật. Mèo tự đi đến vị trí ngẫu nhiên, thỉnh thoảng
+  lên giường ngủ 30–90 giây rồi thức dậy. Tắt mục này nếu muốn mèo đứng yên.
 - **Tray icon**: có trên Cinnamon/MATE/XFCE. Trên GNOME, tray icon bị bỏ qua vì
-  GNOME không hiển thị tray kiểu cũ; dùng chuột phải vào mèo.
+  GNOME không hiển thị tray kiểu cũ; dùng chuột phải vào mèo hoặc giường.
+
+Bộ asset gốc không có frame ngủ riêng, nên `Sleep` dùng lại frame `Chill`
+(chậm hơn) hoặc một frame của nhân vật đặc biệt, kèm chữ `Zzz` pixel vẽ bằng
+cairo. Mèo vẫn nằm đúng trên giường và có thể ngủ ở mọi nhân vật.
 
 Tự khởi động cùng phiên đăng nhập:
 
@@ -106,30 +125,36 @@ rm -f ~/.config/cupcake/state.json
 
 ## Hiệu năng
 
-Đo trên cấu hình ở trên, GNOME 46 Wayland qua XWayland:
+Đo lại trên cấu hình ở trên, GNOME 46 Wayland qua XWayland (23/10/2026), có
+giường và timer lang thang:
 
 | Chỉ số | Kết quả |
 |---|---|
-| RAM (RSS) | ~41.6 MB, ổn định qua 60 giây |
-| CPU | ~0.35% một core (21 tick / 60 giây) |
-| Khởi động | ~116 ms (import 75 ms + mở cửa sổ 41 ms) |
+| RAM (RSS) | ~41 MB khi idle/ngủ; tối đa ~42.5 MB sau khi đi bộ cả hai hướng |
+| CPU (idle, animation chạy) | ~0.3% một core |
+| CPU (ngủ, có Zzz) | ~0.3% một core |
+| CPU (đi bộ, cửa sổ di chuyển 25 lần/giây) | ~1.1% một core |
+| Khởi động | ~145 ms (import + mở hai cửa sổ) |
 | Chuyển animation | 2–3 ms |
 | File descriptor | 13, không tăng |
-| Kiểm tra | 18 nhân vật / 320 frame, tất cả load đúng |
+| Kiểm tra | 18 nhân vật / 320 frame; 3 test pass |
 
-Phần lớn bộ nhớ là thư viện GTK3 (~38 MB). App không cache toàn bộ 320 frame
-để giữ RAM thấp; frame của nhân vật hiện tại được load khi cần.
+Phần lớn bộ nhớ là thư viện GTK3 (~38 MB). App chỉ cache frame của nhân vật
+hiện tại (idle/jump/sleep, kể cả bản lật trái) thay vì cache toàn bộ 320 frame.
+Giường là cửa sổ trong suốt nhỏ, vẽ bằng cairo, không thêm asset hay ảnh nền.
+Frame ngủ dùng lại frame có sẵn nên không tăng dung lượng asset.
 
 ## Cấu trúc file
 
 | File | Mô tả |
 |---|---|
-| `cupcake.py` | Toàn bộ app: cửa sổ trong suốt, animation, menu, lưu trạng thái |
+| `cupcake.py` | Toàn bộ app: cửa sổ mèo, giường, animation, di chuyển, menu, state |
 | `install.sh` | Cài app vào `~/.local/share/cupcake` và tạo launcher |
-| `test_cupcake.py` | Test load đủ frame và ID nhân vật |
+| `test_cupcake.py` | Test load đủ frame, ID nhân vật và animation ngủ |
 | `assets/` | 320 frame PNG 32×32 của 18 nhân vật |
 | `icon.png` | Icon ứng dụng 256×256 |
-| `docs/preview.png` | Ảnh preview cho README |
+| `docs/preview.png` | Preview các nhân vật |
+| `docs/sleep.png` | Preview mèo ngủ trên giường |
 | `LICENSE` | Giấy phép MIT |
 | `.gitignore` | Bỏ qua `__pycache__`, `*.pyc` |
 
@@ -142,8 +167,8 @@ python3 -m unittest test_cupcake.py -v
 ## Ghi chú Wayland
 
 GTK3 không thể tự đặt vị trí hoặc giữ cửa sổ luôn nổi trên Wayland. Vì vậy app
-tự đặt `GDK_BACKEND=x11` và chạy qua **XWayland**; trên GNOME Wayland đã kiểm tra
-vị trí và `_NET_WM_STATE_ABOVE` hoạt động.
+tự đặt `GDK_BACKEND=x11` và cả mèo lẫn giường chạy qua **XWayland**; trên GNOME
+Wayland đã kiểm tra vị trí, di chuyển cửa sổ và `_NET_WM_STATE_ABOVE` hoạt động.
 
 Muốn thử native Wayland (vị trí và lớp cửa sổ do compositor quyết định):
 

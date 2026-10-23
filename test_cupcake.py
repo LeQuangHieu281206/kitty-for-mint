@@ -1,4 +1,4 @@
-"""Frame and registry checks. Run: python3 -m unittest linux/test_cupcake.py"""
+"""Frame and registry checks. Run: python3 -m unittest test_cupcake.py"""
 
 import importlib.util
 import unittest
@@ -25,6 +25,14 @@ class CupcakeTest(unittest.TestCase):
     def test_character_ids_are_unique(self):
         ids = [character["id"] for character in cupcake.CHARACTERS]
         self.assertEqual(len(ids), len(set(ids)))
+
+    def test_every_character_can_sleep(self):
+        for character in cupcake.CHARACTERS:
+            animations = {a["name"]: a for a in character["anims"]}
+            self.assertIn("sleep", animations, character["id"])
+            sleep = animations["sleep"]
+            self.assertIn(sleep["asset"], animations, character["id"])
+            self.assertNotEqual(sleep["asset"], "sleep", character["id"])
 
 
 if __name__ == "__main__":
