@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# graphify knowledge graph output
+graphify-out/

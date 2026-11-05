@@ -20,19 +20,26 @@ kiểu đó, nên bản này biến mèo thành một **desktop pet**: cửa s�
 luôn nổi, kéo thả được, có menu chuột phải và tự nhớ vị trí.
 
 - 18 nhân vật, 320 frame pixel-art.
-- Animation `Chill`, `Wiggle`, các đòn đặc biệt và **Sleep** (ngủ).
+- Animation `Chill`, `Wiggle`, các đòn đặc biệt và **Sleep** (ngủ) 4 frame:
+  mèo nằm cuộn tròn, thở nhẹ, đầu và đuôi khẽ cử động. Riêng **Mint**
+  (`xmas_cat`) có 8 frame ngủ vẽ tay: mèo Santa cuộn tròn, thở nhẹ.
 - Click vào mèo để xem phản ứng nhảy/ăn; **click nhanh 3 lần** để mèo
   thoả mãn, tim bay lên.
 - Kéo mèo để di chuyển: mèo nghiêng theo hướng kéo và có vệt tốc độ.
-- **Giường pet-bed nhỏ** nằm ở cuối thanh dock, cùng hàng với các icon.
-  Kéo ngang để dời giường; click giường để gọi mèo lên ngủ hoặc đánh thức.
-- Mèo ngủ **nằm nghiêng** với `Zzz`, có thể ngủ ở bất kỳ đâu trên màn hình;
-  khi ngủ trên giường, mèo thu nhỏ nằm gọn trong giường ở dock.
+- Con trỏ đổi thành **bàn tay** khi trỏ vào mèo/giường: tay mở khi rê, tay nắm
+  khi giữ và kéo.
+- **Giường pet-bed pixel-art** dùng ảnh riêng (`assets/bed.png`), có thể đặt ở
+  **bất kỳ đâu trên màn hình**. Kéo giường để dời; click giường để gọi mèo lên
+  ngủ hoặc đánh thức.
+- Ẩn/hiện giường bằng mục `Show Bed` trong menu chuột phải.
+- Mèo ngủ **nằm cuộn** với `Zzz`, có thể ngủ ở bất kỳ đâu trên màn hình;
+  khi ngủ trên giường, mèo thu nhỏ nằm gọn trong giường.
+- Mèo và giường **luôn hiện trên mọi workspace**.
 - Mèo **tự đi lang thang** trên màn hình, thỉnh thoảng ngủ tại chỗ hoặc lên
   giường ngủ rồi thức dậy. Có thể tắt bằng mục `Roam Freely`.
 - Thả mèo lên giường bằng chuột trái: mèo tự nằm vào giường và ngủ.
-- Tự lưu nhân vật, animation, vị trí mèo, vị trí giường và thiết lập lang thang
-  vào `~/.config/cupcake/state.json`.
+- Tự lưu nhân vật, animation, vị trí mèo, vị trí/trạng thái ẩn hiện của giường
+  và thiết lập lang thang vào `~/.config/cupcake/state.json`.
 - Nhẹ: ~41–44 MB RAM, ~0.4% CPU khi idle, ~0.6% khi ngủ.
 
 ## Cấu hình máy đã kiểm thử
@@ -103,21 +110,27 @@ python3 cupcake.py
 - **Chuột trái + kéo**: di chuyển mèo tự do. Trong lúc kéo, mèo nghiêng theo
   hướng đi và có vệt tốc độ phía sau. Thả gần giường, mèo sẽ tự nằm vào giường
   và ngủ.
+- **Con trỏ**: bàn tay mở khi trỏ vào mèo/giường, bàn tay nắm khi đang giữ và
+  kéo, trở lại bàn tay mở khi thả.
 - **Click giường**: gọi mèo lên giường ngủ; click lần nữa để đánh thức.
-- **Kéo giường ngang**: dời giường dọc theo thanh dock/panel. Vị trí được lưu.
+- **Kéo giường**: dời giường đến bất kỳ đâu trên màn hình. Vị trí được lưu.
+- **Ẩn/hiện giường**: chuột phải vào mèo hoặc giường, bật/tắt `Show Bed`.
 - **Chuột phải vào mèo hoặc giường**: chọn nhân vật, animation (gồm `Sleep`),
-  `Go to Bed`/`Wake Up`, bật/tắt `Roam Freely`, random, About, Quit.
+  `Go to Bed`/`Wake Up`, `Show Bed`, bật/tắt `Roam Freely`, random, About, Quit.
   `Sleep` cho mèo nằm ngủ ngay tại chỗ; `Go to Bed` gọi mèo lên giường.
 - **Roam Freely**: mặc định bật. Mèo tự đi đến vị trí ngẫu nhiên, đôi khi nằm
   ngủ tại chỗ, đôi khi lên giường ngủ 30–90 giây rồi thức dậy. Tắt mục này nếu
   muốn mèo đứng yên.
+- **Workspace**: mèo và giường được đánh dấu sticky nên luôn xuất hiện ở mọi
+  workspace, không bị biến mất khi chuyển desktop.
 - **Tray icon**: có trên Cinnamon/MATE/XFCE. Trên GNOME, tray icon bị bỏ qua vì
   GNOME không hiển thị tray kiểu cũ; dùng chuột phải vào mèo hoặc giường.
 
-Bộ asset gốc không có frame ngủ, frame thoả mãn hay frame kéo riêng. App ghép
-đầu và thân của chính nhân vật đang chọn thành tư thế nằm, nhắm mắt, rồi vẽ
-`Zzz` bằng cairo. Hiệu ứng thoả mãn và kéo cũng được vẽ bằng cairo, không cần
-thêm asset hay thư viện.
+Bộ asset gốc không có frame ngủ hay frame kéo riêng. App ghép đầu và thân của
+chính nhân vật đang chọn thành tư thế nằm cuộn, nhắm mắt, rồi vẽ `Zzz` bằng
+cairo. Mint dùng sprite ngủ vẽ tay `assets/sleep_xmas_cat.png`, được làm nhấp
+nhô nhẹ theo từng frame. Giường dùng ảnh pixel-art trong `assets/bed.png`, được
+cắt bỏ viền trong suốt và thu về một nửa kích thước gốc.
 
 Tự khởi động cùng phiên đăng nhập:
 
@@ -148,7 +161,7 @@ giường và timer lang thang:
 | Khởi động | ~121–143 ms (import + mở hai cửa sổ) |
 | Chuyển animation | 2–3 ms |
 | File descriptor | 13, không tăng |
-| Kiểm tra | 18 nhân vật / 320 frame; 3 test pass |
+| Kiểm tra | 18 nhân vật / 320 frame; 4 test pass |
 
 Phần lớn bộ nhớ là thư viện GTK3 (~38 MB). App chỉ cache frame của nhân vật
 hiện tại (idle/jump/sleep, kể cả bản lật trái) thay vì cache toàn bộ 320 frame.
@@ -161,8 +174,8 @@ Frame ngủ được sinh từ chính sprite của nhân vật nên không tăng
 |---|---|
 | `cupcake.py` | Toàn bộ app: cửa sổ mèo, giường, animation, di chuyển, menu, state |
 | `install.sh` | Cài app vào `~/.local/share/cupcake` và tạo launcher |
-| `test_cupcake.py` | Test load đủ frame, ID nhân vật và frame ngủ sinh tự động |
-| `assets/` | 320 frame PNG 32×32 của 18 nhân vật |
+| `test_cupcake.py` | Test frame, ID nhân vật, frame ngủ và ảnh giường |
+| `assets/` | 320 frame PNG 32×32 của 18 nhân vật, `bed.png` và `sleep_xmas_cat.png` |
 | `icon.png` | Icon ứng dụng 256×256 |
 | `docs/preview.png` | Preview các nhân vật |
 | `docs/sleep.png` | Preview mèo ngủ trên giường và ngủ tự do |
@@ -179,9 +192,10 @@ python3 -m unittest test_cupcake.py -v
 ## Ghi chú về dock
 
 GNOME Shell vẽ dock bên trong shell, nên app không thể chèn một item vào danh
-sách icon của Dash2Dock Lite. Giường là một cửa sổ trong suốt nhỏ, luôn nổi,
-được canh cùng hàng và bám theo mép phải dock; kéo ngang để đổi vị trí. Nếu đổi
-theme, độ rộng dock hoặc số icon, kéo giường để canh lại.
+sách icon của Dash2Dock Lite. Giường là một cửa sổ trong suốt nhỏ, luôn nổi;
+lần đầu nó nằm gần mép phải dock, sau đó bạn có thể kéo đến bất kỳ đâu trên
+màn hình. Vị trí và trạng thái ẩn/hiện được lưu lại. Nếu đổi theme hoặc độ
+phân giải, kéo giường để canh lại hoặc bật/tắt `Show Bed`.
 
 ## Ghi chú Wayland
 
